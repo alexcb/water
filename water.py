@@ -8,20 +8,27 @@ import time
 # ordered from relay 1 to 8
 pins = [25, 10, 24, 23, 22, 27, 17, 18]
 
+zones = {
+    'greenhouse': pins[0], # yellow
+    'unused_1': pins[1], # green
+    'unused_2': pins[2], # orange
+    'unused_3': pins[3], # blue
+    'unused_4': pins[4], # brown
+    'unused_5': pins[5], # red
+    }
+
 GPIO.setmode(GPIO.BCM) # Broadcom pin-numbering scheme
 for pin in pins:
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, GPIO.HIGH) # should be default, but add here to be safe
 
-i = 0
+pin = zones['greenhouse']
 try:
     while 1:
-        pin = pins[i]
-        GPIO.output(pin, GPIO.LOW)
-        time.sleep( 0.5 )
-        GPIO.output(pin, GPIO.HIGH)
-        time.sleep( 0.1 )
-        i = (i+1) % len(pins)
+        GPIO.output(pin, GPIO.LOW) # turn water on
+        time.sleep( 10 )
+        GPIO.output(pin, GPIO.HIGH) # turn water off
+        time.sleep( 50 )
 finally:
     print('exit')
     GPIO.cleanup()
